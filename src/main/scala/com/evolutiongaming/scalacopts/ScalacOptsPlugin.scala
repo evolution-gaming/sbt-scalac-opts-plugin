@@ -29,7 +29,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-language:implicitConversions"),             // Allow definition of implicit functions called views
     ScalacOpt("-unchecked"),                                // Enable additional warnings where generated code depends on assumptions.
     ScalacOpt("-Xcheckinit"),                               // Wrap field accessors to throw an exception on uninitialized access.
-//  ScalacOpt("-Xfatal-warnings"),                          // Fail the compilation if there are any warnings.
+    ScalacOpt("-Xfatal-warnings"),                          // Fail the compilation if there are any warnings.
     ScalacOpt("-Xfuture") until 13,                         // Turn on future language features. This is not really removed in 2.13 but is replaced by -Xsource which requires the user to choose which language version they want.
     ScalacOpt("-Xlint") until  11,                          // Used to mean enable all linting options but now the syntax for that is different (-Xlint:_ I think)
     ScalacOpt("-Xlint:adapted-args"),                       // Warn if an argument list is modified to match the receiver.
@@ -60,10 +60,10 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Ywarn-nullary-unit") until 13,              // Warn when nullary methods return Unit.
     ScalacOpt("-Ywarn-numeric-widen") until 13,             // Warn when numerics are widened.
     ScalacOpt("-Wnumeric-widen") since 13,                  // ^ Replaces the above
-//  ScalacOpt("-Ywarn-unused-import") until 12,             // Warn if an import selector is not referenced.
+    ScalacOpt("-Ywarn-unused-import") until 12,             // Warn if an import selector is not referenced.
     ScalacOpt("-Ywarn-unused:implicits") since 12 until 13, // Warn if an implicit parameter is unused.
     ScalacOpt("-Wunused:implicits") since 13,               // ^ Replaces the above
-//  ScalacOpt("-Ywarn-unused:imports") since 12 until 13,   // Warn if an import selector is not referenced.
+    ScalacOpt("-Ywarn-unused:imports") since 12 until 13,   // Warn if an import selector is not referenced.
     ScalacOpt("-Wunused:implicits") since 13,               // ^ Replaces the above
     ScalacOpt("-Ywarn-unused:locals") since 12 until 13,    // Warn if a local definition is unused.
     ScalacOpt("-Wunused:locals") since 13,                  // ^ Replaces the above
@@ -80,11 +80,13 @@ object ScalacOptsPlugin extends AutoPlugin {
 
   object autoImport {
 
-    def scalacOptsFor(version: String): List[String] = {
+    lazy val scalacOptsFailOnWarn = settingKey[Option[Boolean]]("Adds or removes -Xfatal-warnings")
+
+    def scalacOptsFor(version: String, scalacOpts: List[ScalacOpt]): List[String] = {
       val opts = for {
         version        <- CrossVersion.partialVersion(version).toList
         (major, minor)  = version if major == 2
-        scalacOpt      <- scalacOptsAll
+        scalacOpt      <- scalacOpts
         if scalacOpt.sinceOpt forall { _ <= minor }
         if scalacOpt.untilOpt forall { _  > minor }
       } yield {
@@ -105,12 +107,21 @@ object ScalacOptsPlugin extends AutoPlugin {
 
       opts: Seq[String] => opts.filterNot(exclude)
     }
+
+    def failOnWarn(failOnWarn: Option[Boolean]): Seq[String] => Seq[String] = {
+      opts: Seq[String] =>
+        failOnWarn.fold(opts) {
+          case true  => opts :+ "-Xfatal-warnings"
+          case false => opts.filter(_ != "-Xfatal-warnings")
+        }
+    }
   }
 
   import autoImport._
 
   override def projectSettings: Seq[Setting[_]] = List(
-    scalacOptions ++= scalacOptsFor(scalaVersion.value),
+    scalacOptsFailOnWarn := Some(false),
+    scalacOptions ++= failOnWarn(scalacOptsFailOnWarn.value)(scalacOptsFor(scalaVersion.value, scalacOptsAll)),
     scalacOptions.in(Compile, console) ~= filterConsoleScalacOpts,
     scalacOptions.in(Test, console)    ~= filterConsoleScalacOpts
   )
