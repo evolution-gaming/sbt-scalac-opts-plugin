@@ -8,7 +8,7 @@
 
 Scalac options for sbt projects. 
 
-Check [scalacOptsAll](src/main/com/evolutiongaming/scalacopts/ScalacOptsPlugin.scala#L22) out
+Check [scalacOptsAll](src/main/scala/com/evolutiongaming/scalacopts/ScalacOptsPlugin.scala#L22) out
 
 Many ideas are borrowed from [sbt-tpolecat](https://github.com/DavidGregory084/sbt-tpolecat). Thanks!
 
