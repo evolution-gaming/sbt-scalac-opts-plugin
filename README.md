@@ -15,7 +15,7 @@ Many ideas are borrowed from [sbt-tpolecat](https://github.com/DavidGregory084/s
 
 ## Settings
 
-* `scalacOptsFailOnWarn: Option[Boolean]` Adds or removes `-Xfatal-warnings`, default is `Some(false)`
+* `scalacOptsFailOnWarn: Option[Boolean]` Adds or removes `-Xfatal-warnings`, default is `Some(true)`
 
 
 ## Installation
@@ -25,5 +25,5 @@ Create a file in your project called `project/plugins.sbt` with the following co
 ```scala
 externalResolvers += Resolver.bintrayIvyRepo("evolutiongaming", "sbt-plugins") 
  
-addSbtPlugin( "com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.2")
+addSbtPlugin( "com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.3")
 ```

@@ -31,6 +31,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Xcheckinit"),                               // Wrap field accessors to throw an exception on uninitialized access.
     ScalacOpt("-Xfatal-warnings"),                          // Fail the compilation if there are any warnings.
     ScalacOpt("-Xfuture") until 13,                         // Turn on future language features. This is not really removed in 2.13 but is replaced by -Xsource which requires the user to choose which language version they want.
+    ScalacOpt("-Xlog-reflective-calls"),                    // Print a message when a reflective method call is generated
     ScalacOpt("-Xlint") until  11,                          // Used to mean enable all linting options but now the syntax for that is different (-Xlint:_ I think)
     ScalacOpt("-Xlint:adapted-args"),                       // Warn if an argument list is modified to match the receiver.
     ScalacOpt("-Xlint:by-name-right-associative") until 13, // By-name parameter of right associative operator.
@@ -109,10 +110,11 @@ object ScalacOptsPlugin extends AutoPlugin {
     }
 
     def failOnWarn(failOnWarn: Option[Boolean]): Seq[String] => Seq[String] = {
+      val opt = "-Xfatal-warnings"
       opts: Seq[String] =>
         failOnWarn.fold(opts) {
-          case true  => opts :+ "-Xfatal-warnings"
-          case false => opts.filter(_ != "-Xfatal-warnings")
+          case true  => if (opts contains opt) opts else opts :+ opt
+          case false => opts.filter(_ != opt)
         }
     }
   }
@@ -120,7 +122,7 @@ object ScalacOptsPlugin extends AutoPlugin {
   import autoImport._
 
   override def projectSettings: Seq[Setting[_]] = List(
-    scalacOptsFailOnWarn := Some(false),
+    scalacOptsFailOnWarn := Some(true),
     scalacOptions ++= failOnWarn(scalacOptsFailOnWarn.value)(scalacOptsFor(scalaVersion.value, scalacOptsAll)),
     scalacOptions.in(Compile, console) ~= filterConsoleScalacOpts,
     scalacOptions.in(Test, console)    ~= filterConsoleScalacOpts
