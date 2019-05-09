@@ -25,5 +25,5 @@ Create a file in your project called `project/plugins.sbt` with the following co
 ```scala
 externalResolvers += Resolver.bintrayIvyRepo("evolutiongaming", "sbt-plugins") 
  
-addSbtPlugin( "com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.3")
+addSbtPlugin( "com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.4")
 ```
