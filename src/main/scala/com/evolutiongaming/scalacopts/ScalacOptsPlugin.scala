@@ -51,6 +51,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Xlint:stars-align"),                        // Pattern sequence wildcard must align with sequence component.
     ScalacOpt("-Xlint:type-parameter-shadow"),              // A local type parameter shadows a type already in scope.
     ScalacOpt("-Xlint:unsound-match") until 13,             // Pattern match may not be typesafe.
+    ScalacOpt("-Ywarn-macros:after"),                       // Enable lint warnings on macro expansions: Only inspect expanded trees when generating unused symbol warnings.
     ScalacOpt("-Yno-adapted-args") until 13,                // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
     ScalacOpt("-Ypartial-unification") until 13,            // Enable partial unification in type constructor inference
     ScalacOpt("-Ywarn-dead-code") until 13,                 // Warn when dead code is identified.
