@@ -32,7 +32,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Xfatal-warnings"),                          // Fail the compilation if there are any warnings.
     ScalacOpt("-Xfuture") until 13,                         // Turn on future language features. This is not really removed in 2.13 but is replaced by -Xsource which requires the user to choose which language version they want.
     ScalacOpt("-Xlog-reflective-calls"),                    // Print a message when a reflective method call is generated
-    ScalacOpt("-Xlint") until  11,                          // Used to mean enable all linting options but now the syntax for that is different (-Xlint:_ I think)
+    ScalacOpt("-Xlint") until 11,                           // Used to mean enable all linting options but now the syntax for that is different (-Xlint:_ I think)
     ScalacOpt("-Xlint:adapted-args"),                       // Warn if an argument list is modified to match the receiver.
     ScalacOpt("-Xlint:by-name-right-associative") until 13, // By-name parameter of right associative operator.
     ScalacOpt("-Xlint:constant") since 12,                  // Evaluation of a constant arithmetic expression results in an error.
@@ -42,7 +42,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Xlint:inaccessible"),                       // Warn about inaccessible types in method signatures.
     ScalacOpt("-Xlint:infer-any"),                          // Warn when a type argument is inferred to be `Any`.
     ScalacOpt("-Xlint:missing-interpolator"),               // A string literal appears to be missing an interpolator id.
-    ScalacOpt("-Xlint:nullary-override"),                   // Warn when non-nullary `def f()' overrides nullary `def f'.
+    ScalacOpt("-Xlint:nullary-override") until 13,          // Warn when non-nullary `def f()' overrides nullary `def f'.
     ScalacOpt("-Xlint:nullary-unit"),                       // Warn when nullary methods return Unit.
     ScalacOpt("-Xlint:option-implicit"),                    // Option.apply used implicit view.
     ScalacOpt("-Xlint:package-object-classes"),             // Class or object defined in package object.
