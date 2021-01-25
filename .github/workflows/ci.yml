@@ -10,7 +10,6 @@ name: CI
       strategy:
         matrix:
           scala:
-            - 2.13.4
             - 2.12.13
 
       steps:
