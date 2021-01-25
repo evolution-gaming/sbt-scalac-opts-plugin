@@ -67,7 +67,7 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Ywarn-unused:implicits") since 12 until 13, // Warn if an implicit parameter is unused.
     ScalacOpt("-Wunused:implicits") since 13,               // ^ Replaces the above
     ScalacOpt("-Ywarn-unused:imports") since 12 until 13,   // Warn if an import selector is not referenced.
-    ScalacOpt("-Wunused:implicits") since 13,               // ^ Replaces the above
+    ScalacOpt("-Wunused:imports") since 13,                 // ^ Replaces the above
     ScalacOpt("-Ywarn-unused:locals") since 12 until 13,    // Warn if a local definition is unused.
     ScalacOpt("-Wunused:locals") since 13,                  // ^ Replaces the above
     ScalacOpt("-Ywarn-unused:params") since 12 until 13,    // Warn if a value parameter is unused.
