@@ -8,7 +8,7 @@
 
 Scalac options for sbt projects. 
 
-Check [scalacOptsAll](src/main/scala/com/evolutiongaming/scalacopts/ScalacOptsPlugin.scala#L22) out
+Check [scalacOptsAll](src/main/scala/com/evolution/scalacopts/ScalacOptsPlugin.scala#L22) out
 
 Many ideas are borrowed from [sbt-tpolecat](https://github.com/DavidGregory084/sbt-tpolecat). Thanks!
 
@@ -25,5 +25,5 @@ Create a file in your project called `project/plugins.sbt` with the following co
 ```scala
 externalResolvers += Resolver.bintrayIvyRepo("evolutiongaming", "sbt-plugins") 
  
-addSbtPlugin("com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.6")
+addSbtPlugin("com.evolution" % "sbt-scalac-opts-plugin" % "0.0.7")
 ```

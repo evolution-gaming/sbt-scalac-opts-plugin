@@ -1,4 +1,4 @@
-package com.evolutiongaming.scalacopts
+package com.evolution.scalacopts
 
 import sbt.Keys._
 import sbt._

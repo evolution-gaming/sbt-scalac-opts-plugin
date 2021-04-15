@@ -5,7 +5,7 @@ sbtPlugin := true
 
 name := "sbt-scalac-opts-plugin"
 
-organization := "com.evolutiongaming"
+organization := "com.evolution"
 
 description := "Scalac options for sbt projects"
 
@@ -13,7 +13,7 @@ homepage := Some(new URL("https://github.com/evolution-gaming/sbt-scalac-opts-pl
 
 startYear := Some(2019)
 
-organizationName := "Evolution Gaming"
+organizationName := "Evolution"
 
 organizationHomepage := Some(url("https://evolution.com"))
 
