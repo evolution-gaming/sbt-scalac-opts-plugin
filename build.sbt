@@ -1,4 +1,5 @@
 import ScriptedPlugin.autoImport._
+import Artifactory._
 
 sbtPlugin := true
 
@@ -8,15 +9,13 @@ organization := "com.evolutiongaming"
 
 description := "Scalac options for sbt projects"
 
-homepage := Some(new URL("http://github.com/evolution-gaming/sbt-scalac-opts-plugin"))
+homepage := Some(new URL("https://github.com/evolution-gaming/sbt-scalac-opts-plugin"))
 
 startYear := Some(2019)
 
 organizationName := "Evolution Gaming"
 
-organizationHomepage := Some(url("http://evolutiongaming.com"))
-
-bintrayOrganization := Some("evolutiongaming")
+organizationHomepage := Some(url("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -24,7 +23,9 @@ crossScalaVersions := Seq("2.12.11")
 
 crossSbtVersions := Seq("1.3.13")
 
-resolvers += Resolver.bintrayRepo("evolutiongaming", "maven")
+publishTo := Some(Resolver.evolutionReleases)
+
+publishMavenStyle := true
 
 licenses := Seq(("MIT", url("https://opensource.org/licenses/MIT")))
 
