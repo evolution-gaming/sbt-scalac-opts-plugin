@@ -126,7 +126,7 @@ object ScalacOptsPlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] = List(
     scalacOptsFailOnWarn := Some(true),
     scalacOptions ++= failOnWarn(scalacOptsFailOnWarn.value)(scalacOptsFor(scalaVersion.value, scalacOptsAll)),
-    scalacOptions.in(Compile, console) ~= filterConsoleScalacOpts,
-    scalacOptions.in(Test, console)    ~= filterConsoleScalacOpts
+    Compile / console / scalacOptions ~= filterConsoleScalacOpts,
+    Test / console / scalacOptions ~= filterConsoleScalacOpts
   )
 }

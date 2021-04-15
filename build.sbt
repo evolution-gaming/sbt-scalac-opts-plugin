@@ -19,11 +19,11 @@ organizationHomepage := Some(url("https://evolution.com"))
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.12.11")
+crossScalaVersions := Seq("2.12.13")
 
-crossSbtVersions := Seq("1.3.13")
+crossSbtVersions := Seq("1.5.0")
 
-publishTo := Some(Resolver.evolutionReleases)
+publishTo := Some(Resolver.artifactory("evolution", "maven-local-sbt-plugins"))
 
 publishMavenStyle := true
 
