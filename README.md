@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/evolution-gaming/sbt-scalac-opts-plugin/workflows/CI/badge.svg)](https://github.com/evolution-gaming/sbt-scalac-opts-plugin/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/evolution-gaming/sbt-scalac-opts-plugin/badge.svg)](https://coveralls.io/r/evolution-gaming/sbt-scalac-opts-plugin)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/15f881be37fa48078219c9c9e8d9361c)](https://www.codacy.com/app/evolution-gaming/sbt-scalac-opts-plugin?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=evolution-gaming/sbt-scalac-opts-plugin&amp;utm_campaign=Badge_Grade)
-[![Version](https://img.shields.io/badge/version-click-blue)](https://evolution.jfrog.io/artifactory/api/search/latestVersion?g=com.evolution&a=sbt-scalac-opts-plugin_2.12&repos=maven-local-releases)
+[![Version](https://img.shields.io/badge/Version-click-blue)](https://evolution.jfrog.io/artifactory/api/search/latestVersion?g=com.evolution&a=sbt-scalac-opts-plugin_2.12&repos=maven-local-releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellowgreen.svg)](https://opensource.org/licenses/MIT)
 
 Scalac options for sbt projects. 
