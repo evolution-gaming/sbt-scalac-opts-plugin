@@ -1,5 +1,3 @@
-externalResolvers += Resolver.bintrayIvyRepo("evolutiongaming", "sbt-plugins")
-
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 
 addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
@@ -10,4 +8,4 @@ addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.7")
 
-addSbtPlugin("com.evolutiongaming" % "sbt-scalac-opts-plugin" % "0.0.5")
+addSbtPlugin("com.evolution" % "sbt-scalac-opts-plugin" % "0.0.9")
