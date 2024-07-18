@@ -8,7 +8,7 @@ organization := "com.evolution"
 
 description := "Scalac options for sbt projects"
 
-homepage := Some(new URL("https://github.com/evolution-gaming/sbt-scalac-opts-plugin"))
+homepage := Some(url("https://github.com/evolution-gaming/sbt-scalac-opts-plugin"))
 
 startYear := Some(2019)
 
@@ -46,7 +46,8 @@ sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
 
-publishTo := sonatypePublishToBundle.value
+//publishTo := sonatypePublishToBundle.value
+publishTo := Some(Resolver.evolutionReleases)
 
 import ReleaseTransformations._
 
@@ -72,4 +73,6 @@ scriptedLaunchOpts := Seq("-Xmx1G", s"-Dplugin.version=${version.value}")
 
 enablePlugins(SbtPlugin)
 
+//addCommandAlias("check", "all versionPolicyCheck Compile/doc")
+addCommandAlias("check", "show version")
 addCommandAlias("build", ";clean; coverage; test; scripted")
