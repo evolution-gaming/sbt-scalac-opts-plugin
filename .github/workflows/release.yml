@@ -1,11 +1,52 @@
-name: Publish new Release
+name: release
 
 on:
-  release:
-    types: [published]
-    branches: [master]
+  push:
+    tags: [ "v*" ]
+
+# run only one release action at a time for the repo, wait for the previous to finish before running another one
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}
 
 jobs:
-  release:
-    uses: evolution-gaming/scala-github-actions/.github/workflows/release.yml@v1
-    secrets: inherit
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Tags are needed for sbt-dynver to compute the version from the pushed tag.
+          fetch-depth: 0
+      - uses: coursier/cache-action@v8
+        continue-on-error: true
+      - uses: actions/setup-java@v5
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: sbt
+      - uses: sbt/setup-sbt@v1
+
+      # sbt ci-release doesn't verify the build, need to do it explicitly
+      - name: sbt build
+        run: sbt build
+
+      - run: sbt ci-release
+        env:
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+
+      - name: delete release tag if failed
+        if: failure()
+        run: git push --delete origin ${{ github.ref_name }}
+
+      - name: publish release notes
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="v${tag#v}" \
+              --generate-notes
