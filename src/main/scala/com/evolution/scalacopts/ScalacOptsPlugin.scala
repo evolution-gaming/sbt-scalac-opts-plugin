@@ -102,7 +102,6 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Wunused:privates").since(13),                    // ^ Replaces the above
     ScalacOpt("-Ywarn-value-discard").until(13),                 // Warn when non-Unit expression results are unused.
     ScalacOpt("-Wvalue-discard").since(13),                      // ^ Replaces the above
-    ScalacOpt("-Wnonunit-statement").since(ScalaVersion(13, 9)), // Warn when expression is ignored because it is followed by another expression.
   )
 
 
