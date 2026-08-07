@@ -1,18 +1,40 @@
 > +show scalacOptions
 > +compile
--> +constant/compile
--> +deadCode/compile
--> +deprecation/compile
--> +feature/compile
--> +inferAny/compile
--> +missingInterpolator/compile
--> +nullaryUnit/compile
--> +numericWiden/compile
--> +packageObjectClasses/compile
--> +typeParameterShadow/compile
--> +unusedImplicits/compile
--> +unusedImports/compile
--> +unusedLocals/compile
--> +unusedPatvars/compile
--> +unusedPrivates/compile
--> +valueDiscard/compile
+
+# the -Ywarn-* spellings
+> ++2.12.13
+-> constant/compile
+-> deadCode/compile
+-> deprecation/compile
+-> feature/compile
+-> inferAny/compile
+-> missingInterpolator/compile
+-> nullaryUnit/compile
+-> numericWiden/compile
+-> packageObjectClasses/compile
+-> typeParameterShadow/compile
+-> unusedImplicits/compile
+-> unusedImports/compile
+-> unusedLocals/compile
+-> unusedPatvars/compile
+-> unusedPrivates/compile
+-> valueDiscard/compile
+
+# the -W* spellings
+> ++2.13.10
+-> constant/compile
+-> deadCode/compile
+-> deprecation/compile
+-> feature/compile
+-> inferAny/compile
+-> missingInterpolator/compile
+-> nullaryUnit/compile
+-> numericWiden/compile
+-> packageObjectClasses/compile
+-> typeParameterShadow/compile
+-> unusedImplicits/compile
+-> unusedImports/compile
+-> unusedLocals/compile
+-> unusedPatvars/compile
+-> unusedPrivates/compile
+-> valueDiscard/compile
