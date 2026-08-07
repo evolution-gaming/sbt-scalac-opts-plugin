@@ -39,20 +39,11 @@
 -> unusedPrivates/compile
 -> valueDiscard/compile
 
-# Scala 3, which has no equivalent for the -Xlint options
+# Scala 3, which has no equivalent for the -Xlint options.
+# 3.8.4 is left out: its compiler bridge needs Java 17, the sbt 1.x CI leg runs Java 11.
 > ++3.3.6
 -> deprecation/compile
 -> feature/compile
--> unusedImplicits/compile
--> unusedImports/compile
--> unusedLocals/compile
--> unusedPrivates/compile
--> valueDiscard/compile
-
-> ++3.8.4
--> deprecation/compile
--> feature/compile
--> unusedImplicits/compile
 -> unusedImports/compile
 -> unusedLocals/compile
 -> unusedPrivates/compile
