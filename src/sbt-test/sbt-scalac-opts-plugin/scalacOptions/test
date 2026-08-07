@@ -1,2 +1,18 @@
 > +show scalacOptions
 > +compile
+-> +constant/compile
+-> +deadCode/compile
+-> +deprecation/compile
+-> +feature/compile
+-> +inferAny/compile
+-> +missingInterpolator/compile
+-> +nullaryUnit/compile
+-> +numericWiden/compile
+-> +packageObjectClasses/compile
+-> +typeParameterShadow/compile
+-> +unusedImplicits/compile
+-> +unusedImports/compile
+-> +unusedLocals/compile
+-> +unusedPatvars/compile
+-> +unusedPrivates/compile
+-> +valueDiscard/compile
