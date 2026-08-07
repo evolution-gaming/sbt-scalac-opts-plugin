@@ -27,9 +27,11 @@ crossScalaVersions := Seq("2.12.21", "3.8.4")
   }
 }
 
+// the plugin is still published for sbt 1.5.0, but the scripted tests compile Scala 3
+// sources, which the sbt 1.5.0 launcher is too old to handle
 scriptedSbt := {
   scalaBinaryVersion.value match {
-    case "2.12" => "1.5.0"
+    case "2.12" => "1.12.14"
     case _      => "2.0.3"
   }
 }
