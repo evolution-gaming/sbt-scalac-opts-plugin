@@ -27,6 +27,11 @@ crossScalaVersions := Seq("2.12.21", "3.8.4")
   }
 }
 
+dependencyOverrides ++= Seq(
+  "org.apache.logging.log4j" % "log4j-api" % "2.26.1",
+  "org.apache.logging.log4j" % "log4j-core" % "2.26.1",
+)
+
 scriptedSbt := {
   scalaBinaryVersion.value match {
     case "2.12" => "1.5.0"
