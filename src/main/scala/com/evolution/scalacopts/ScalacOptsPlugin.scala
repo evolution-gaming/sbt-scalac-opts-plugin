@@ -9,7 +9,8 @@ object ScalacOptsPlugin extends AutoPlugin {
 
   override def trigger: PluginTrigger = allRequirements
 
-  // major is always 2 since this plugin currently works with Scala 2 only
+  // the major version is implied by the option list the version is used in,
+  // `scalacOptsAll` for Scala 2 and `scalacOpts3All` for Scala 3
   final case class ScalaVersion(minor: Long, patch: Option[Long] = None)
 
   object ScalaVersion {
@@ -104,19 +105,74 @@ object ScalacOptsPlugin extends AutoPlugin {
     ScalacOpt("-Wvalue-discard").since(13),                      // ^ Replaces the above
   )
 
+  // `since` and `until` refer to the Scala 3 minor version here
+  val scalacOpts3All = List(
+    ScalacOpt("-deprecation"),                  // Emit warning and location for usages of deprecated APIs.
+    ScalacOpt("-feature"),                      // Emit warning and location for usages of features that should be imported explicitly.
+    ScalacOpt("-language:implicitConversions"), // Allow definition of implicit functions called views
+    ScalacOpt("-unchecked"),                    // Enable additional warnings where generated code depends on assumptions.
+    ScalacOpt("-Werror"),                       // Fail the compilation if there are any warnings. Replaces -Xfatal-warnings, which is a deprecated alias in Scala 3.
+    ScalacOpt("-Wunused:all").since(3),         // Warn about unused imports, local and private definitions, parameters and implicits.
+    ScalacOpt("-Wvalue-discard").since(3),      // Warn when non-Unit expression results are unused.
+  )
+
 
   object autoImport {
 
-    lazy val scalacOptsFailOnWarn = settingKey[Option[Boolean]]("Adds or removes -Xfatal-warnings")
+    lazy val scalacOptsFailOnWarn = settingKey[Option[Boolean]]("Adds or removes -Xfatal-warnings, -Werror on Scala 3")
 
-    def scalacOptsFor(version: String, scalacOpts: List[ScalacOpt]): List[String] = {
-      // consider only major version 2 since this plugin currently works with Scala 2 only
+    /** Options from `scalacOpts` applicable to the given Scala 2 version, empty for any other major version. */
+    def scalacOptsFor(version: String, scalacOpts: List[ScalacOpt]): List[String] =
+      optsFor(version, 2, scalacOpts)
+
+    /** Options from `scalacOpts` applicable to the given Scala 3 version, empty for any other major version. */
+    def scalacOpts3For(version: String, scalacOpts: List[ScalacOpt]): List[String] =
+      optsFor(version, 3, scalacOpts)
+
+    /** All the options this plugin enables for the given Scala version, of either major version. */
+    def scalacOptsFor(version: String): List[String] =
+      if (isScala3(version)) scalacOpts3For(version, scalacOpts3All)
+      else scalacOptsFor(version, scalacOptsAll)
+
+    val filterConsoleScalacOpts: Seq[String] => Seq[String] = {
+      val exclude = Set(
+        "-Werror",
+        "-Wdead-code",
+        "-Wunused:all",
+        "-Wunused:imports",
+        "-Ywarn-unused:imports",
+        "-Ywarn-unused-import",
+        "-Ywarn-dead-code",
+        "-Xfatal-warnings")
+
+      (opts: Seq[String]) => opts.filterNot(exclude)
+    }
+
+    def failOnWarn(failOnWarn: Option[Boolean]): Seq[String] => Seq[String] =
+      failOnWarnWith("-Xfatal-warnings", failOnWarn)
+
+    def failOnWarn(failOnWarn: Option[Boolean], version: String): Seq[String] => Seq[String] =
+      failOnWarnWith(if (isScala3(version)) "-Werror" else "-Xfatal-warnings", failOnWarn)
+
+    private val failOnWarnOpts = Set("-Xfatal-warnings", "-Werror")
+
+    private def failOnWarnWith(opt: String, failOnWarn: Option[Boolean]): Seq[String] => Seq[String] =
+      (opts: Seq[String]) =>
+        failOnWarn.fold(opts) {
+          case true  => if (opts exists failOnWarnOpts) opts else opts :+ opt
+          case false => opts.filterNot(failOnWarnOpts)
+        }
+
+    private def isScala3(version: String): Boolean =
+      CrossVersion.partialVersion(version).exists { case (major, _) => major == 3 }
+
+    private def optsFor(version: String, major: Long, scalacOpts: List[ScalacOpt]): List[String] = {
       val scalaVersion: Option[ScalaVersion] =
         (CrossVersion.partialVersion(version), version.split('.')) match {
-          case (Some((2, minor)), Array(_, _, patch)) =>
+          case (Some((`major`, minor)), Array(_, _, patch)) =>
             Some(ScalaVersion(minor, Try(patch.toLong).toOption))
-          case (Some((2, minor)), _) => Some(ScalaVersion(minor, None))
-          case _                     => None
+          case (Some((`major`, minor)), _) => Some(ScalaVersion(minor, None))
+          case _                           => None
         }
       val opts = for {
         version <- scalaVersion.toList
@@ -128,35 +184,13 @@ object ScalacOptsPlugin extends AutoPlugin {
       }
       List("-encoding", "utf-8") ++ opts
     }
-
-    val filterConsoleScalacOpts: Seq[String] => Seq[String] = {
-      val exclude = Set(
-        "-Werror",
-        "-Wdead-code",
-        "-Wunused:imports",
-        "-Ywarn-unused:imports",
-        "-Ywarn-unused-import",
-        "-Ywarn-dead-code",
-        "-Xfatal-warnings")
-
-      (opts: Seq[String]) => opts.filterNot(exclude)
-    }
-
-    def failOnWarn(failOnWarn: Option[Boolean]): Seq[String] => Seq[String] = {
-      val opt = "-Xfatal-warnings"
-      (opts: Seq[String]) =>
-        failOnWarn.fold(opts) {
-          case true  => if (opts contains opt) opts else opts :+ opt
-          case false => opts.filter(_ != opt)
-        }
-    }
   }
 
   import autoImport._
 
   override def projectSettings = List(
     scalacOptsFailOnWarn := Some(true),
-    scalacOptions ++= failOnWarn(scalacOptsFailOnWarn.value)(scalacOptsFor(scalaVersion.value, scalacOptsAll)),
+    scalacOptions ++= failOnWarn(scalacOptsFailOnWarn.value, scalaVersion.value)(scalacOptsFor(scalaVersion.value)),
     Compile / console / scalacOptions ~= filterConsoleScalacOpts,
     Test / console / scalacOptions ~= filterConsoleScalacOpts
   )

@@ -8,14 +8,15 @@
 
 Scalac options for sbt projects. 
 
-Check [scalacOptsAll](src/main/scala/com/evolution/scalacopts/ScalacOptsPlugin.scala#L22) out
+Check [scalacOptsAll](src/main/scala/com/evolution/scalacopts/ScalacOptsPlugin.scala#L47) (Scala 2) and
+[scalacOpts3All](src/main/scala/com/evolution/scalacopts/ScalacOptsPlugin.scala#L109) (Scala 3) out
 
 Many ideas are borrowed from [sbt-tpolecat](https://github.com/DavidGregory084/sbt-tpolecat). Thanks!
 
 
 ## Settings
 
-* `scalacOptsFailOnWarn: Option[Boolean]` Adds or removes `-Xfatal-warnings`, default is `Some(true)`
+* `scalacOptsFailOnWarn: Option[Boolean]` Adds or removes `-Xfatal-warnings` (`-Werror` on Scala 3), default is `Some(true)`
 
 
 ## Installation
