@@ -39,6 +39,17 @@ scriptedSbt := {
   }
 }
 
+dependencyOverrides ++= Seq(
+  "jline-reader",
+  "jline-builtins",
+  "jline-terminal",
+  "jline-style",
+  "jline-native",
+  "jline-terminal-jni",
+  "jline-terminal-jna",
+  "jline-terminal-jansi",
+).map("org.jline" % _ % "3.30.17")
+
 // the currently released sbt-scalac-opts-plugin (dogfooded on this very project via
 // project/plugins.sbt) always adds -Xfatal-warnings, which Scala 3 flags as a deprecated
 // alias and then fails on under -Werror; disable it for the Scala 3 leg until a Scala
